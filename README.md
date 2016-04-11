@@ -1,6 +1,6 @@
 # Red-Black Trees in Swift
 
-[![Swift 2.1](https://img.shields.io/badge/Swift-2.1-blue.svg)](https://developer.apple.com/swift/)
+[![Swift 3.0](https://img.shields.io/badge/Swift-3.0-blue.svg)](https://developer.apple.com/swift/)
 [![License](https://img.shields.io/badge/licence-MIT-blue.svg)](https://github.com/lorentey/RedBlackTree/blob/master/LICENCE.md)
 
 [![Build Status](https://travis-ci.org/lorentey/RedBlackTree.svg?branch=master)](https://travis-ci.org/lorentey/RedBlackTree)

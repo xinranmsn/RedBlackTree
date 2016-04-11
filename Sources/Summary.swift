@@ -20,7 +20,7 @@ import Foundation
 // - Distillate
 // - Extract
 public protocol SummaryProtocol: Equatable {
-    typealias Item
+    associatedtype Item
 
     init() // Identity
     init(_ item: Item)
@@ -32,11 +32,11 @@ public func + <Summary: SummaryProtocol>(a: Summary?, b: Summary?) -> Summary {
     switch (a, b) {
     case (nil, nil):
         return Summary()
-    case (nil, .Some(let b)):
+    case (nil, .some(let b)):
         return b
-    case (.Some(let a), nil):
+    case (.some(let a), nil):
         return a
-    case (.Some(let a), .Some(let b)):
+    case (.some(let a), .some(let b)):
         return Summary(a, b)
     }
 }
@@ -46,11 +46,11 @@ public func + <Summary: SummaryProtocol>(a: Summary.Item?, b: Summary?) -> Summa
     switch (a, b) {
     case (nil, nil):
         return Summary()
-    case (nil, .Some(let b)):
+    case (nil, .some(let b)):
         return b
-    case (.Some(let a), nil):
+    case (.some(let a), nil):
         return Summary(a)
-    case (.Some(let a), .Some(let b)):
+    case (.some(let a), .some(let b)):
         return Summary(Summary(a), b)
     }
 }
@@ -60,19 +60,19 @@ public func + <Summary: SummaryProtocol>(a: Summary?, b: Summary.Item?) -> Summa
     switch (a, b) {
     case (nil, nil):
         return Summary()
-    case (nil, .Some(let b)):
+    case (nil, .some(let b)):
         return Summary(b)
-    case (.Some(let a), nil):
+    case (.some(let a), nil):
         return a
-    case (.Some(let a), .Some(let b)):
+    case (.some(let a), .some(let b)):
         return Summary(a, Summary(b))
     }
 }
 
-public func += <S: SummaryProtocol>(inout left: S, right: S.Item?) {
+public func += <S: SummaryProtocol>(left: inout S, right: S.Item?) {
     left = left + right
 }
-public func += <S: SummaryProtocol>(inout left: S, right: S?) {
+public func += <S: SummaryProtocol>(left: inout S, right: S?) {
     left = left + right
 }
 

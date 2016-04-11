@@ -25,7 +25,7 @@ extension RedBlackTree {
 
             s += node.head
             let right = show(node.right, prefix: s)
-            return "(" + [left, root, right].filter { !$0.isEmpty }.joinWithSeparator(" ") + ")"
+            return "(" + [left, root, right].filter { !$0.isEmpty }.joined(separator: " ") + ")"
         }
         return show(root, prefix: Summary())
     }
@@ -43,7 +43,7 @@ extension RedBlackTree {
         return self.lookup(directions)
     }
 
-    func lookup<S: SequenceType where S.Generator.Element == RedBlackDirection>(directions: S) -> Handle? {
+    func lookup<S: Sequence where S.Iterator.Element == RedBlackDirection>(directions: S) -> Handle? {
         var handle = self.root
         for direction in directions {
             guard let h = handle else { return nil }

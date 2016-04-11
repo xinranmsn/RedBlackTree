@@ -196,7 +196,7 @@ public struct RedBlackTree<InsertionKey: RedBlackInsertionKey, Payload> {
 
 public extension RedBlackTree {
 
-    public init<C: CollectionType where C.Generator.Element == (InsertionKey, Payload)>(_ elements: C) {
+    public init<C: Collection where C.Iterator.Element == (InsertionKey, Payload)>(_ elements: C) {
         self.init()
         self.reserveCapacity(Int(elements.count.toIntMax()))
         for (key, payload) in elements {
@@ -383,7 +383,7 @@ extension RedBlackTree {
 
 //MARK: Generating all items in the tree
 
-public struct RedBlackGenerator<Key: RedBlackInsertionKey, Payload>: GeneratorType {
+public struct RedBlackIterator<Key: RedBlackInsertionKey, Payload>: IteratorProtocol {
     typealias Tree = RedBlackTree<Key, Payload>
     private let tree: Tree
     private var handle: Tree.Handle?
@@ -399,19 +399,19 @@ public struct RedBlackGenerator<Key: RedBlackInsertionKey, Payload>: GeneratorTy
     }
 }
 
-extension RedBlackTree: SequenceType {
-    public typealias Generator = RedBlackGenerator<InsertionKey, Payload>
+extension RedBlackTree: Sequence {
+    public typealias Iterator = RedBlackIterator<InsertionKey, Payload>
 
     /// Return a generator that provides an ordered list of all (key, payload) pairs that are currently in the tree.
     /// - Complexity: O(1) to get the generator; O(count) to retrieve all elements.
-    public func generate() -> Generator {
-        return RedBlackGenerator(tree: self, handle: leftmost, summary: Summary())
+    public func makeIterator() -> Iterator {
+        return RedBlackIterator(tree: self, handle: leftmost, summary: Summary())
     }
 
     /// Return a generator that provides an ordered list of (key, payload) pairs that are at or after `handle`.
     /// - Complexity: O(1) to get the generator; O(count) to retrieve all elements.
-    public func generateFrom(handle: Handle) -> Generator {
-        return RedBlackGenerator(tree: self, handle: handle, summary: Summary())
+    public func makeIteratorFrom(handle: Handle) -> Iterator {
+        return RedBlackIterator(tree: self, handle: handle, summary: Summary())
     }
 }
 
@@ -857,7 +857,7 @@ extension RedBlackTree {
 extension RedBlackTree {
 
     public mutating func removeAll(keepCapacity keepCapacity: Bool = false) {
-        nodes.removeAll(keepCapacity: keepCapacity)
+        nodes.removeAll(keepingCapacity: keepCapacity)
         root = nil
         leftmost = nil
         rightmost = nil

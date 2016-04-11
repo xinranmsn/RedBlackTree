@@ -31,7 +31,7 @@ struct RedBlackInfo<Key: RedBlackInsertionKey, Payload> {
 
     var defects: [(Handle, String, FileString, UInt)] = []
 
-    mutating func addDefect(handle: Handle, _ description: String, file: FileString = __FILE__, line: UInt = __LINE__) {
+    mutating func addDefect(handle: Handle, _ description: String, file: FileString = #file, line: UInt = #line) {
         defects.append((handle, description, file, line))
     }
 }

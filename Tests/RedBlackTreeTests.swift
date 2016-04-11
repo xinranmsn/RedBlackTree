@@ -51,22 +51,22 @@ public struct TestSummary<Key: Comparable>: SummaryProtocol, CustomStringConvert
         switch (a.min, b.min) {
         case (nil, nil):
             self.min = nil
-        case(.Some(let a), nil):
+        case(.some(let a), nil):
             self.min = a
-        case (nil, .Some(let b)):
+        case (nil, .some(let b)):
             self.min = b
-        case (.Some(let a), .Some(let b)):
+        case (.some(let a), .some(let b)):
             self.min = Swift.min(a, b)
         }
 
         switch (a.max, b.max) {
         case (nil, nil):
             self.max = nil
-        case(.Some(let a), nil):
+        case(.some(let a), nil):
             self.max = a
-        case (nil, .Some(let b)):
+        case (nil, .some(let b)):
             self.max = b
-        case (.Some(let a), .Some(let b)):
+        case (.some(let a), .some(let b)):
             self.max = Swift.max(a, b)
         }
 
@@ -193,7 +193,7 @@ class RedBlackTrivialTests: XCTestCase {
         XCTAssertEqual(tree.show(), "")
         let key = Key(42)
         XCTAssertNil(tree.find(key))
-        var generator = tree.generate()
+        var generator = tree.makeIterator()
         XCTAssertNil(generator.next())
     }
 
@@ -209,7 +209,7 @@ class RedBlackTrivialTests: XCTestCase {
         XCTAssertEqual(tree.rightmost, ten)
         XCTAssertEqual(tree.show(), "(10)")
 
-        var generator = tree.generate()
+        var generator = tree.makeIterator()
         guard let first = generator.next() else { XCTFail(); return }
         XCTAssertEqual(first.0, Key(10))
         XCTAssertEqual(first.1, "root")
@@ -337,7 +337,7 @@ class RedBlackTreeSimpleQueryTests: XCTestCase {
         let handles = (1...10).flatMap { tree.find(Key($0)) }
 
         var next: TestTree.Handle? = nil
-        for handle in handles.reverse() {
+        for handle in handles.reversed() {
             XCTAssertEqual(tree.successor(handle), next)
             next = handle
         }
@@ -405,7 +405,7 @@ class RedBlackTreeSimpleQueryTests: XCTestCase {
         let expectedElements = [(Key(1), "one"), (Key(2), "two"), (Key(3), "three"), (Key(4), "four"), (Key(5), "five"), (Key(6), "six"), (Key(7), "seven"), (Key(8), "eight"), (Key(9), "nine"), (Key(10), "ten")]
 
         var elements = Array<TestTree.Element>()
-        var generator = tree.generate()
+        var generator = tree.makeIterator()
         while let element = generator.next() {
             elements.append(element)
         }
@@ -430,7 +430,7 @@ class RedBlackTreeSimpleQueryTests: XCTestCase {
         for i in 1...10 {
             guard let handle = tree.find(Key(i)) else { XCTFail(); continue }
             var elements = Array<TestTree.Element>()
-            var generator = tree.generateFrom(handle)
+            var generator = tree.makeIteratorFrom(handle)
             while let e = generator.next() {
                 elements.append(e)
             }
@@ -544,7 +544,7 @@ class RedBlackTreeSimpleMutatorTests: XCTestCase {
 
     func testInsert() {
 
-        for i in (20...25).reverse() {
+        for i in (20...25).reversed() {
             let h = tree.insert("\(i)", forKey: Key(i))
             XCTAssertEqual(h, tree.find(Key(i)))
             tree.assertValid()
@@ -568,7 +568,7 @@ class RedBlackTreeSimpleMutatorTests: XCTestCase {
     func testInsertBefore() {
 
         var prev: TestTree.Handle? = nil
-        for i in (20...25).reverse() {
+        for i in (20...25).reversed() {
             let h = tree.insert("\(i)", forKey: Key(i), before: prev)
             XCTAssertEqual(h, tree.find(Key(i)))
             tree.assertValid()
@@ -581,7 +581,7 @@ class RedBlackTreeSimpleMutatorTests: XCTestCase {
     func testAppend() {
 
         var tree2 = TestTree()
-        for i in (20...25).reverse() {
+        for i in (20...25).reversed() {
             tree2.insert("\(i)", forKey: Key(i))
         }
 
@@ -595,7 +595,7 @@ class RedBlackTreeSimpleMutatorTests: XCTestCase {
     func testMerge() {
 
         var tree2 = TestTree()
-        for i in (5..<15).reverse() {
+        for i in (5..<15).reversed() {
             tree2.insert("\(i)", forKey: Key(i))
         }
         tree.merge(tree2)

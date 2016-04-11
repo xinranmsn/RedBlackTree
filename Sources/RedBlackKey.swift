@@ -9,7 +9,7 @@
 import Foundation
 
 public protocol RedBlackKey: Comparable {
-    typealias Summary: SummaryProtocol
+    associatedtype Summary: SummaryProtocol
 
     /// Returns a key that matches a node with `head` whose preceding nodes reduce into `summary`.
     /// - Complexity: Must be O(1).

@@ -39,7 +39,7 @@ extension RedBlackTree {
             let p = prefix + self[node.left]?.summary
             let (rightTabs, rightLines) = dump(node.right, prefix: p + node.head)
 
-            let tabs = max(leftTabs, rightTabs)
+            let tabs = Swift.max(leftTabs, rightTabs)
 
             let dot = (node.color == .Black ? "●" : "○")
 

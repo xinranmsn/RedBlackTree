@@ -62,10 +62,10 @@ extension RedBlackTree {
         info.leftmost = li.leftmost ?? handle
         info.rightmost = ri.rightmost ?? handle
 
-        info.minDepth = min(li.minDepth, ri.minDepth) + 1
-        info.maxDepth = max(li.maxDepth, ri.maxDepth) + 1
-        info.minRank = min(li.minRank, ri.minRank) + (node.color == .Black ? 1 : 0)
-        info.maxRank = max(li.maxRank, ri.maxRank) + (node.color == .Black ? 1 : 0)
+        info.minDepth = Swift.min(li.minDepth, ri.minDepth) + 1
+        info.maxDepth = Swift.max(li.maxDepth, ri.maxDepth) + 1
+        info.minRank = Swift.min(li.minRank, ri.minRank) + (node.color == .Black ? 1 : 0)
+        info.maxRank = Swift.max(li.maxRank, ri.maxRank) + (node.color == .Black ? 1 : 0)
 
         info.defects = li.defects + ri.defects
         info.color = node.color
